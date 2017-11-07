@@ -7,9 +7,9 @@ Ans: Projects to be submitted should be of good quality and it can fall under
      learning, AR/VR, Software Port, etc...
 
 #### 2. How can the author update the repository once it is migrated to Projects Org?
-Ans: Since, we assign the author full ownership of their repository, they can
-     do whatever they want. But, it should not break project format and the project
-     should be working.
+Ans: Since, we assign the author full ownership of their repository, they are
+     responsible for keeping it updated. But, it should not break project format
+     and should be in working condition.
 
 #### 3. How can the author advertise the project after submitting?
 Ans: Author of the project is welcomed to write a blog about the project and we will
@@ -26,6 +26,6 @@ Ans: Strictly NO. But if there are cases where the author doesn't have access to
 #### 5. What are the benefits of hosting a project in 96Boards Project Org?
 Ans: Benefits are uncountable and mostly it is the visibility among the community.
      Also, submitting a project to Project Org gives the author a chance to be part
-     of the growing 96Boards ecosystem!
+     of the 96Boards ecosystem!
 
 

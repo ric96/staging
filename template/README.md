@@ -9,10 +9,10 @@ Summary of the project.
 - [2) Software](#2-software) 
    - [2.1) Operating System](#21-operating-system)
    - [2.2) Software Dependencies](#22-software-dependencies)
-- [3) Project Title](#3-self-balancing-bot---rev-1)
+- [3) Project Title](#3-project-title)
    - [3.1) Hardware setup](#31-hardware-setup)
    - [3.2) Building](#32-building)
-   - [3.3) Project in Action](#33-programming-arduino)
+   - [3.3) Project in Action](#33-project-in-action)
    - [3.4) Video Demonstration](#34-video-demonstration)
    
 # 1) Hardware

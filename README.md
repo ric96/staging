@@ -2,13 +2,12 @@
 ## Introduction
 
 Welcome to the staging area of 96Boards projects. This repository is used by
-the community to submit their projects into [96Boards Projects Org](https://github.com/96boards-projects)
-ecosystem.
+the community to submit their projects into [96Boards Projects Org](https://github.com/96boards-projects).
 
 ## What is Staging area?
 
 Staging area is the place where the community submit their projects for review. Once it
-gets reviewed by the 96Boards team, project will get migrated into mainline
+gets reviewed by the 96Boards team, project will get migrated into
 [96Boards Projects Org](https://github.com/96boards-projects). From there
 on the author who contributed the project will be granted full access to their repo.
 

@@ -60,36 +60,107 @@ uint32_t get_us(uint32_t trig, uint32_t echo, struct device *dev);
 
 void main(void)
 {
-	gpioa = device_get_binding(PORT);
-	gpiob = device_get_binding(PORT2);
-	gpioc = device_get_binding(PORT3);
+	int ret;
 
+	gpioa = device_get_binding(PORT);
+	if (!gpioa) {
+		printk("Cannot find %s!\n", PORT);
+	}
+	gpiob = device_get_binding(PORT2);
+	if (!gpiob) {
+		printk("Cannot find %s!\n", PORT2);
+	}
+	gpioc = device_get_binding(PORT3);
+	if (!gpioc) {
+		printk("Cannot find %s!\n", PORT3);
+	}
 	//Motor
-	gpio_pin_configure(gpioa, A1A, GPIO_DIR_OUT);
-	gpio_pin_configure(gpioa, A1B, GPIO_DIR_OUT);
-	gpio_pin_configure(gpioa, B1A, GPIO_DIR_OUT);
-	gpio_pin_configure(gpioa, B1B, GPIO_DIR_OUT);
+	ret = gpio_pin_configure(gpioa, A1A, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PA%d!\n", A1A);
+	}
+	ret = gpio_pin_configure(gpioa, A1B, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PA%d!\n", A1B);
+	}
+	ret = gpio_pin_configure(gpioa, B1A, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PA%d!\n", B1A);
+	}
+	ret = gpio_pin_configure(gpioa, B1B, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PA%d!\n", B1B);
+	}
 
 	//IR
-	gpio_pin_configure(gpiob, IRFL, GPIO_DIR_IN);
-	gpio_pin_configure(gpiob, IRFR, GPIO_DIR_IN);
-	gpio_pin_configure(gpiob, IRBL, GPIO_DIR_IN);
-	gpio_pin_configure(gpiob, IRBR, GPIO_DIR_IN);
+	ret = gpio_pin_configure(gpiob, IRFL, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PB%d!\n", IRFL);
+	}
+	ret = gpio_pin_configure(gpiob, IRFR, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PB%d!\n", IRFR);
+	}
+	ret = gpio_pin_configure(gpiob, IRBL, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PB%d!\n", IRBL);
+	}
+	ret = gpio_pin_configure(gpiob, IRBR, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PB%d!\n", IRBR);
+	}
 
 	//US
-	gpio_pin_configure(gpioc, TRIGFL, GPIO_DIR_OUT);
-	gpio_pin_configure(gpioc, ECHOFL, GPIO_DIR_IN);
-	gpio_pin_configure(gpioc, TRIGFC, GPIO_DIR_OUT);
-	gpio_pin_configure(gpioc, ECHOFC, GPIO_DIR_IN);
-	gpio_pin_configure(gpioc, TRIGFR, GPIO_DIR_OUT);
-	gpio_pin_configure(gpioc, ECHOFR, GPIO_DIR_IN);
-	gpio_pin_configure(gpioc, TRIGBR, GPIO_DIR_OUT);
-	gpio_pin_configure(gpioc, ECHOBR, GPIO_DIR_IN);
-	gpio_pin_configure(gpiob, TRIGBC, GPIO_DIR_OUT);
-	gpio_pin_configure(gpiob, ECHOBC, GPIO_DIR_IN);
-	gpio_pin_configure(gpiob, TRIGBL, GPIO_DIR_OUT);
-	gpio_pin_configure(gpiob, ECHOBL, GPIO_DIR_IN);
+	ret = gpio_pin_configure(gpioc, TRIGFL, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PC%d!\n", TRIGFL);
+	}
+	ret = gpio_pin_configure(gpioc, ECHOFL, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PC%d!\n", ECHOFL);
+	}
+	ret = gpio_pin_configure(gpioc, TRIGFC, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PC%d!\n", TRIGFC);
+	}
+	ret = gpio_pin_configure(gpioc, ECHOFC, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PC%d!\n", ECHOFC);
+	}
+	ret = gpio_pin_configure(gpioc, TRIGFR, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PC%d!\n", TRIGFR);
+	}
+	ret = gpio_pin_configure(gpioc, ECHOFR, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PC%d!\n", ECHOFR);
+	}
+	ret = gpio_pin_configure(gpioc, TRIGBR, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PC%d!\n", TRIGBR);
+	}
+	ret = gpio_pin_configure(gpioc, ECHOBR, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PC%d!\n", ECHOBR);
+	}
+	ret = gpio_pin_configure(gpiob, TRIGBC, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PB%d!\n", TRIGBC);
+	}
+	ret = gpio_pin_configure(gpiob, ECHOBC, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PB%d!\n", ECHOBC);
+	}
+	ret = gpio_pin_configure(gpiob, TRIGBL, GPIO_DIR_OUT);
+	if (ret) {
+		printk("Error configuring PB%d!\n", TRIGBL);
+	}
+	ret = gpio_pin_configure(gpiob, ECHOBL, GPIO_DIR_IN);
+	if (ret) {
+		printk("Error configuring PB%d!\n", ECHOBL);
+	}
 }
+
 void bwd()
 {
 	gpio_pin_write(gpioa, A1A, 1);

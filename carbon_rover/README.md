@@ -1,6 +1,6 @@
 # Carbon Rover
 
-The Carbon Rover is a 4 WD Robot that uses 6 ultrasonic sensors and 6 IR sensors for object and edge detection.
+The Carbon Rover is a 4 WD Robot that uses 6 ultrasonic sensors and 4 IR sensors for object and edge detection.
 The ultrasonic sensors make sure that the rover doesn't bump into objects in it's path and the IR sensors are used to detect edges so it doesn't fall off.
 
 The Rover is programmed using Zephyr RTOS and heavily relies on its multi-threading functionality to collect sensor data and control the motors at the same time.

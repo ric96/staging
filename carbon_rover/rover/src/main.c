@@ -43,6 +43,9 @@
 
 #define DELAY K_MSEC(10)
 
+static K_THREAD_STACK_ARRAY_DEFINE(stacks, 3, STACKSIZE);
+static struct k_thread __kernel threads[3];
+
 static struct device *gpioa;
 static struct device *gpiob;
 static struct device *gpioc;
@@ -56,6 +59,9 @@ void bwd();
 void stop();
 void left();
 void right();
+void read_us();
+void read_ir();
+void run();
 uint32_t get_us(uint32_t trig, uint32_t echo, struct device *dev);
 
 void main(void)
@@ -65,100 +71,128 @@ void main(void)
 	gpioa = device_get_binding(PORT);
 	if (!gpioa) {
 		printk("Cannot find %s!\n", PORT);
+		return;
 	}
 	gpiob = device_get_binding(PORT2);
 	if (!gpiob) {
 		printk("Cannot find %s!\n", PORT2);
+		return;
 	}
 	gpioc = device_get_binding(PORT3);
 	if (!gpioc) {
 		printk("Cannot find %s!\n", PORT3);
+		return;
 	}
 	//Motor
 	ret = gpio_pin_configure(gpioa, A1A, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PA%d!\n", A1A);
+		return;
 	}
 	ret = gpio_pin_configure(gpioa, A1B, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PA%d!\n", A1B);
+		return;
 	}
 	ret = gpio_pin_configure(gpioa, B1A, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PA%d!\n", B1A);
+		return;
 	}
 	ret = gpio_pin_configure(gpioa, B1B, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PA%d!\n", B1B);
+		return;
 	}
 
 	//IR
 	ret = gpio_pin_configure(gpiob, IRFL, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PB%d!\n", IRFL);
+		return;
 	}
 	ret = gpio_pin_configure(gpiob, IRFR, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PB%d!\n", IRFR);
+		return;
 	}
 	ret = gpio_pin_configure(gpiob, IRBL, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PB%d!\n", IRBL);
+		return;
 	}
 	ret = gpio_pin_configure(gpiob, IRBR, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PB%d!\n", IRBR);
+		return;
 	}
 
 	//US
 	ret = gpio_pin_configure(gpioc, TRIGFL, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PC%d!\n", TRIGFL);
+		return;
 	}
 	ret = gpio_pin_configure(gpioc, ECHOFL, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PC%d!\n", ECHOFL);
+		return;
 	}
 	ret = gpio_pin_configure(gpioc, TRIGFC, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PC%d!\n", TRIGFC);
+		return;
 	}
 	ret = gpio_pin_configure(gpioc, ECHOFC, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PC%d!\n", ECHOFC);
+		return;
 	}
 	ret = gpio_pin_configure(gpioc, TRIGFR, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PC%d!\n", TRIGFR);
+		return;
 	}
 	ret = gpio_pin_configure(gpioc, ECHOFR, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PC%d!\n", ECHOFR);
+		return;
 	}
 	ret = gpio_pin_configure(gpioc, TRIGBR, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PC%d!\n", TRIGBR);
+		return;
 	}
 	ret = gpio_pin_configure(gpioc, ECHOBR, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PC%d!\n", ECHOBR);
+		return;
 	}
 	ret = gpio_pin_configure(gpiob, TRIGBC, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PB%d!\n", TRIGBC);
+		return;
 	}
 	ret = gpio_pin_configure(gpiob, ECHOBC, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PB%d!\n", ECHOBC);
+		return;
 	}
 	ret = gpio_pin_configure(gpiob, TRIGBL, GPIO_DIR_OUT);
 	if (ret) {
 		printk("Error configuring PB%d!\n", TRIGBL);
+		return;
 	}
 	ret = gpio_pin_configure(gpiob, ECHOBL, GPIO_DIR_IN);
 	if (ret) {
 		printk("Error configuring PB%d!\n", ECHOBL);
+		return;
 	}
+
+	//Start threads
+	k_thread_create(&threads[0], &stacks[0][0], STACKSIZE, read_us, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
+	k_thread_create(&threads[1], &stacks[1][0], STACKSIZE, read_ir, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
+	k_thread_create(&threads[2], &stacks[2][0], STACKSIZE, run, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
 }
 
 void bwd()
@@ -329,7 +363,3 @@ void run()
 		k_sleep(DELAY);
 	}
 }
-
-K_THREAD_DEFINE(run_id, STACKSIZE, run, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
-K_THREAD_DEFINE(read_ir_id, STACKSIZE, read_ir, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
-K_THREAD_DEFINE(read_us_id, STACKSIZE, read_us, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);

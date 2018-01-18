@@ -249,8 +249,15 @@ uint32_t get_us(uint32_t trig, uint32_t echo, struct device *dev)
 	gpio_pin_write(dev, trig, 1);
 	k_sleep(K_MSEC(10));
 	gpio_pin_write(dev, trig, 0);
+	start_time = k_cycle_get_32();
 	do {
 		gpio_pin_read(dev, echo, &val);
+		stop_time = k_cycle_get_32();
+		cycles_spent = stop_time - start_time;
+		if (cycles_spent > 243600) //50cm for 84MHz (((MAX_RANGE * 58000) / 1000000000) * (CLOCK * 1000000))
+		{
+			return 50;
+		}
 	} while (val == 0);
 	start_time = k_cycle_get_32();
 
@@ -258,10 +265,6 @@ uint32_t get_us(uint32_t trig, uint32_t echo, struct device *dev)
 		gpio_pin_read(dev, echo, &val);
 		stop_time = k_cycle_get_32();
 		cycles_spent = stop_time - start_time;
-		if (cycles_spent > 243600) //50cm for 84MHz (((MAX_RANGE * 58000) / 1000000000) * (CLOCK * 1000000))
-		{
-			break;
-		}
 	} while (val == 1);
 	nanseconds_spent = SYS_CLOCK_HW_CYCLES_TO_NS(cycles_spent);
 	cm = nanseconds_spent / 58000;
